@@ -12,7 +12,7 @@ const Blog = ({ blog, onLike, onRemove }) => {
   const [expanded, setExpanded] = useState(false)
 
   const toggleExpanded = () => setExpanded(!expanded)
-  
+
   const blogTitleWithAuthor = () => (
     <div>
       {blog.title} {blog.author}
@@ -25,9 +25,8 @@ const Blog = ({ blog, onLike, onRemove }) => {
     </div>
   )
 
-  const removeButton = () => 
+  const removeButton = () =>
     <button onClick={() => onRemove(blog)}>remove</button>
-  
 
   const expandedBlog = () => (
     <div onClick={toggleExpanded} style={blogStyle}>

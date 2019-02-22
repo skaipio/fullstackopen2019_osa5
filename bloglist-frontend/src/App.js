@@ -103,7 +103,7 @@ const App = () => {
 
   const removeBlog = async blog => {
     if (!window.confirm(`remove blog ${blog.title}`)) return
-    
+
     try {
       await blogService.remove(blog.id)
       const index = blogs.findIndex(b => b.id === blog.id)

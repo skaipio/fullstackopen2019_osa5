@@ -19,7 +19,7 @@ const Togglable = React.forwardRef((props, ref) => {
     <div style={showWhenVisible}>
       {props.children}
     </div>
-  )  
+  )
 })
 
 export default Togglable
