@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import loginService from '../services/login'
 
 const blogStyle = {
@@ -39,6 +40,12 @@ const Blog = ({ blog, onLike, onRemove }) => {
   )
 
   return expanded ? expandedBlog() : compactBlog()
+}
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  onLike: PropTypes.func.isRequired,
+  onRemove: PropTypes.func.isRequired
 }
 
 export default Blog
