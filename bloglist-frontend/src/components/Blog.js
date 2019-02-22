@@ -20,7 +20,7 @@ const Blog = ({ blog, onLike, onRemove }) => {
   )
 
   const compactBlog = () => (
-    <div onClick={toggleExpanded} style={blogStyle}>
+    <div onClick={toggleExpanded} style={blogStyle} className="compact-blog">
       {blogTitleWithAuthor()}
     </div>
   )
@@ -29,7 +29,7 @@ const Blog = ({ blog, onLike, onRemove }) => {
     <button onClick={() => onRemove(blog)}>remove</button>
 
   const expandedBlog = () => (
-    <div onClick={toggleExpanded} style={blogStyle}>
+    <div onClick={toggleExpanded} style={blogStyle} className="expanded-blog">
       {blogTitleWithAuthor()}
       <div>{blog.url}</div>
       <div>{blog.likes} likes <button onClick={() => onLike(blog)}>like</button></div>

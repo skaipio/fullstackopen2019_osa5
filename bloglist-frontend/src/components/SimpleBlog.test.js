@@ -1,9 +1,6 @@
 import React from 'react'
-import 'jest-dom/extend-expect'
-import { render, cleanup, fireEvent } from 'react-testing-library'
+import { render, fireEvent } from 'react-testing-library'
 import SimpleBlog from './SimpleBlog'
-
-afterEach(cleanup)
 
 describe('SimpleBlog', () => {
   const blog = {
