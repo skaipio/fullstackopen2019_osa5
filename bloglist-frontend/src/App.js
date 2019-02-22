@@ -16,8 +16,14 @@ const App = () => {
 
   const loginFormRef = React.createRef()
 
-  useEffect(() => {
-    blogService.getAll().then(blogs => setBlogs(blogs));
+  const setAndSortBlogs = (blogs) => {
+    blogs.sort((blogLeft, blogRight) => blogRight.likes - blogLeft.likes)
+    setBlogs(blogs)
+  }
+
+  useEffect(async () => {
+    const allBlogs = await blogService.getAll()
+    setAndSortBlogs(allBlogs)
   }, []);
 
   useEffect(() => {
@@ -87,7 +93,7 @@ const App = () => {
       const index = blogs.findIndex(b => b.id === blog.id)
       const updatedBlogs = [...blogs]
       updatedBlogs.splice(index, 1, updatedBlog)
-      setBlogs(updatedBlogs)
+      setAndSortBlogs(updatedBlogs)
     } catch (error) {
       showNotification(error.message, 'error')
     }

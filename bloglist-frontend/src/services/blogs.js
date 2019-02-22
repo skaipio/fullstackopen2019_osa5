@@ -19,7 +19,7 @@ const create = async blog => {
 const update = async (blog, id) => {
   const blogToSend = {
     ...blog,
-    user: blog.user.id
+    user: blog.user ? blog.user.id : undefined
   }
   const response = await axios.put(`${baseUrl}/${id}`, blogToSend)
   return response.data
