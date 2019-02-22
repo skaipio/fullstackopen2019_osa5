@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import loginService from '../services/login'
 
 const blogStyle = {
   padding: '0.5em',
@@ -23,13 +24,17 @@ const Blog = ({ blog, onLike, onRemove }) => {
     </div>
   )
 
+  const removeButton = () => 
+    <button onClick={() => onRemove(blog)}>remove</button>
+  
+
   const expandedBlog = () => (
     <div onClick={toggleExpanded} style={blogStyle}>
       {blogTitleWithAuthor()}
       <div>{blog.url}</div>
       <div>{blog.likes} likes <button onClick={() => onLike(blog)}>like</button></div>
       {blog.user ? <div>added by {blog.user.name}</div> : null}
-      <button onClick={() => onRemove(blog)}>remove</button>
+      {blog.user && blog.user.username === loginService.getUser().username && removeButton()}
     </div>
   )
 
