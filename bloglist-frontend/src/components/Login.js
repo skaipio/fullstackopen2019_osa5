@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
 const Login = ({ handleLogin }) => {
-  const [username, setUsername] = useState(null)
-  const [password, setPassword] = useState(null)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
-  const submit = (event) => {
+  const submit = event => {
     event.preventDefault()
     handleLogin(username, password)
-    setUsername(null)
-    setPassword(null)
+    setUsername('')
+    setPassword('')
   }
 
   return (
@@ -17,18 +17,26 @@ const Login = ({ handleLogin }) => {
       <form onSubmit={submit}>
         <div>
           <label>käyttäjätunnus</label>
-          <input type="text" onChange={(event) => setUsername(event.target.value)} />
+          <input
+            type="text"
+            value={username}
+            onChange={event => setUsername(event.target.value)}
+          />
         </div>
         <div>
           <label>salasana</label>
-          <input type="password" onChange={(event) => setPassword(event.target.value)} />
+          <input
+            type="password"
+            value={password}
+            onChange={event => setPassword(event.target.value)}
+          />
         </div>
         <div>
           <button type="submit">kirjaudu</button>
         </div>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
