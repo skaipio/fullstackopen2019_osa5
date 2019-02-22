@@ -6,7 +6,7 @@ const blogStyle = {
   cursor: 'pointer'
 }
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, onLike }) => {
   const [expanded, setExpanded] = useState(false)
 
   const toggleExpanded = () => setExpanded(!expanded)
@@ -27,7 +27,7 @@ const Blog = ({ blog }) => {
     <div onClick={toggleExpanded} style={blogStyle}>
       {blogTitleWithAuthor()}
       <div>{blog.url}</div>
-      <div>{blog.likes} likes <button>like</button></div>
+      <div>{blog.likes} likes <button onClick={() => onLike(blog)}>like</button></div>
       {blog.user ? <div>added by {blog.user.name}</div> : null}
     </div>
   )

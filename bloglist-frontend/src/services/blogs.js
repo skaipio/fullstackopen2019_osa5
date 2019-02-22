@@ -15,4 +15,14 @@ const create = async blog => {
   })
   return response.data
 }
-export default { create, getAll }
+
+const update = async (blog, id) => {
+  const blogToSend = {
+    ...blog,
+    user: blog.user.id
+  }
+  const response = await axios.put(`${baseUrl}/${id}`, blogToSend)
+  return response.data
+}
+
+export default { create, getAll, update }

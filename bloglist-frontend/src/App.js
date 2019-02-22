@@ -76,6 +76,23 @@ const App = () => {
     }
   }
 
+  const likeBlog = async (blog) => {
+    const likedBlog = {
+      ...blog,
+      likes: blog.likes + 1
+    }
+    try {
+      const updatedBlog = await blogService.update(likedBlog, blog.id)
+      updatedBlog.user = blog.user
+      const index = blogs.findIndex(b => b.id === blog.id)
+      const updatedBlogs = [...blogs]
+      updatedBlogs.splice(index, 1, updatedBlog)
+      setBlogs(updatedBlogs)
+    } catch (error) {
+      showNotification(error.message, 'error')
+    }
+  }
+
   const loginForm = () => (
     <Togglable ref={loginFormRef} buttonLabelVisible="kirjaudu" buttonLabelHidden="kirjaudu ulos">
       <Login handleLogin={handleLogin} />
@@ -94,7 +111,7 @@ const App = () => {
       {loginDetails()}
       <CreateBlog handleCreate={createBlog} />
       {blogs.map(blog => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} onLike={likeBlog} />
       ))}
     </>
   );
