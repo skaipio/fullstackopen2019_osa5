@@ -1,6 +1,8 @@
 import axios from 'axios'
 const baseUrl = '/api/login'
 
+let userToken = null
+
 const login = async (username, password) => {
   const response = await axios.post(baseUrl, {
     username, password
@@ -8,4 +10,12 @@ const login = async (username, password) => {
   return response.data
 }
 
-export default { login }
+const getUser = () => {
+  return userToken
+}
+
+const setUser = (token) => {
+  userToken = token
+}
+
+export default { login, getUser, setUser }
