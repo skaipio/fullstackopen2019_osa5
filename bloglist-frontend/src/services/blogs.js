@@ -2,6 +2,10 @@ import axios from 'axios'
 import loginService from './login'
 const baseUrl = '/api/blogs'
 
+const headersWithToken = () => ({
+  Authorization: `Bearer ${loginService.getUser().token}`
+})
+
 const getAll = () => {
   const request = axios.get(baseUrl)
   return request.then(response => response.data)
@@ -9,9 +13,7 @@ const getAll = () => {
 
 const create = async blog => {
   const response = await axios.post(baseUrl, blog, {
-    headers: {
-      'Authorization': `Bearer ${loginService.getUser().token}`
-    }
+    headers: headersWithToken()
   })
   return response.data
 }
@@ -25,4 +27,10 @@ const update = async (blog, id) => {
   return response.data
 }
 
-export default { create, getAll, update }
+const remove = async id => {
+  return await axios.delete(`${baseUrl}/${id}`, {
+    headers: headersWithToken()
+  })
+}
+
+export default { create, getAll, remove, update }

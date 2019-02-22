@@ -1,41 +1,40 @@
-import React, { useState, useEffect } from "react";
-import Blog from "./components/Blog";
-import Login from "./components/Login";
-import CreateBlog from "./components/CreateBlog";
+import React, { useState, useEffect } from 'react'
+import Blog from './components/Blog'
+import Login from './components/Login'
+import CreateBlog from './components/CreateBlog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
-import blogService from "./services/blogs";
-import loginService from "./services/login";
+import blogService from './services/blogs'
+import loginService from './services/login'
 
-const localStorageUserKey = "bloglistUser";
+const localStorageUserKey = 'bloglistUser'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [user, setUser] = useState(null);
+  const [blogs, setBlogs] = useState([])
+  const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
 
   const loginFormRef = React.createRef()
 
-  const setAndSortBlogs = (blogs) => {
+  const setAndSortBlogs = blogs => {
     blogs.sort((blogLeft, blogRight) => blogRight.likes - blogLeft.likes)
     setBlogs(blogs)
   }
 
-  useEffect(async () => {
-    const allBlogs = await blogService.getAll()
-    setAndSortBlogs(allBlogs)
-  }, []);
+  useEffect(() => {
+    blogService.getAll().then(allBlogs => setAndSortBlogs(allBlogs))
+  }, [])
 
   useEffect(() => {
-    const strUser = window.localStorage.getItem(localStorageUserKey);
+    const strUser = window.localStorage.getItem(localStorageUserKey)
     loginFormRef.current.setVisibility(!strUser)
     if (!strUser) return
 
     const parsedUser = JSON.parse(strUser)
 
     loginService.setUser(parsedUser)
-    setUser(parsedUser);
-  }, []);
+    setUser(parsedUser)
+  }, [])
 
   const showNotification = (text, type) => {
     setNotification({
@@ -52,9 +51,9 @@ const App = () => {
     try {
       const user = await loginService.login(username, password)
       loginFormRef.current.setVisibility(false)
-      window.localStorage.setItem(localStorageUserKey, JSON.stringify(user));
+      window.localStorage.setItem(localStorageUserKey, JSON.stringify(user))
       loginService.setUser(user)
-      setUser(user);
+      setUser(user)
     } catch (error) {
       if (error.response && error.response.data) {
         showNotification(error.response.data.error, 'error')
@@ -62,19 +61,22 @@ const App = () => {
         showNotification(error.message, 'error')
       }
     }
-  };
+  }
 
   const logout = () => {
-    window.localStorage.removeItem(localStorageUserKey);
-    setUser(null);
+    window.localStorage.removeItem(localStorageUserKey)
+    setUser(null)
     loginFormRef.current.setVisibility(true)
-  };
+  }
 
-  const createBlog = async (blog) => {
+  const createBlog = async blog => {
     try {
       const savedBlog = await blogService.create(blog)
       setBlogs(blogs.concat(savedBlog))
-      showNotification(`a new blog ${savedBlog.title} by ${savedBlog.author} added`, 'success')
+      showNotification(
+        `a new blog ${savedBlog.title} by ${savedBlog.author} added`,
+        'success'
+      )
       return true
     } catch (error) {
       showNotification(error.message, 'error')
@@ -82,7 +84,7 @@ const App = () => {
     }
   }
 
-  const likeBlog = async (blog) => {
+  const likeBlog = async blog => {
     const likedBlog = {
       ...blog,
       likes: blog.likes + 1
@@ -99,8 +101,24 @@ const App = () => {
     }
   }
 
+  const removeBlog = async blog => {
+    if (!window.confirm(`remove blog ${blog.title}`)) return
+    
+    try {
+      await blogService.remove(blog.id)
+      const index = blogs.findIndex(b => b.id === blog.id)
+      const updatedBlogs = [...blogs]
+      updatedBlogs.splice(index, 1)
+      setAndSortBlogs(updatedBlogs)
+    } catch (error) {
+      showNotification(error.message, 'error')
+    }
+  }
+
   const loginForm = () => (
-    <Togglable ref={loginFormRef} buttonLabelVisible="kirjaudu" buttonLabelHidden="kirjaudu ulos">
+    <Togglable
+      ref={loginFormRef}
+    >
       <Login handleLogin={handleLogin} />
     </Togglable>
   )
@@ -110,24 +128,33 @@ const App = () => {
       <p>{user.name} logged in</p>
       <button onClick={logout}>logout</button>
     </>
-  );
+  )
 
   const blogPage = () => (
     <>
       {loginDetails()}
       <CreateBlog handleCreate={createBlog} />
       {blogs.map(blog => (
-        <Blog key={blog.id} blog={blog} onLike={likeBlog} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          onLike={likeBlog}
+          onRemove={removeBlog}
+        />
       ))}
     </>
-  );
+  )
 
-  return <div>
-    {user !== null && <h2>blogs</h2>}
-    {notification && <Notification text={notification.text} type={notification.type} />}
-    {loginForm()}
-    {user !== null && blogPage()}
-  </div>;
-};
+  return (
+    <div>
+      {user !== null && <h2>blogs</h2>}
+      {notification && (
+        <Notification text={notification.text} type={notification.type} />
+      )}
+      {loginForm()}
+      {user !== null && blogPage()}
+    </div>
+  )
+}
 
-export default App;
+export default App
