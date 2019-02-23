@@ -7,9 +7,14 @@ export const useField = (type) => { // highlighl-line
     setValue(event.target.value)
   }
 
+  const reset = () => {
+    setValue('')
+  }
+
   return {
     type,
     value,
-    onChange
+    onChange,
+    reset
   }
 }

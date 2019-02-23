@@ -8,6 +8,8 @@ const Login = ({ handleLogin }) => {
   const submit = event => {
     event.preventDefault()
     handleLogin(username.value, password.value)
+    username.reset()
+    password.reset()
   }
 
   return (
