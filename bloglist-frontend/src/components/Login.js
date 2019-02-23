@@ -14,7 +14,7 @@ const Login = ({ handleLogin }) => {
   return (
     <>
       <h2>Log in to application</h2>
-      <form onSubmit={submit}>
+      <form onSubmit={submit} className="login-form">
         <div>
           <label>käyttäjätunnus</label>
           <input

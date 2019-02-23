@@ -134,14 +134,16 @@ const App = () => {
     <>
       {loginDetails()}
       <CreateBlog handleCreate={createBlog} />
-      {blogs.map(blog => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          onLike={likeBlog}
-          onRemove={removeBlog}
-        />
-      ))}
+      <div className="blog-list">
+        {blogs.map(blog => (
+          <Blog
+            key={blog.id}
+            blog={blog}
+            onLike={likeBlog}
+            onRemove={removeBlog}
+          />
+        ))}
+      </div>
     </>
   )
 
