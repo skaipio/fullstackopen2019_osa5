@@ -18,11 +18,11 @@ const Login = ({ handleLogin }) => {
       <form onSubmit={submit} className="login-form">
         <div>
           <label>käyttäjätunnus</label>
-          <input {...username} />
+          <input {...username.asInputProps()} />
         </div>
         <div>
           <label>salasana</label>
-          <input {...password} />
+          <input {...password.asInputProps()} />
         </div>
         <div>
           <button type="submit">kirjaudu</button>

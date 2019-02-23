@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export const useField = (type) => { // highlighl-line
+export const useField = (type) => {
   const [value, setValue] = useState('')
 
   const onChange = (event) => {
@@ -11,10 +11,15 @@ export const useField = (type) => { // highlighl-line
     setValue('')
   }
 
+  const asInputProps = () => ({
+    type, value, onChange
+  })
+
   return {
     type,
     value,
     onChange,
-    reset
+    reset,
+    asInputProps
   }
 }
