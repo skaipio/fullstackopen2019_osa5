@@ -7,9 +7,7 @@ import App from './App'
 
 describe('<App />', () => {
   it('if no user logged, blogs are not rendered', async () => {
-    let component
-
-    component = render(
+    const component = render(
       <App />
     )
 
@@ -26,5 +24,27 @@ describe('<App />', () => {
 
     const loginForm = component.container.querySelector('.login-form')
     expect(loginForm).toBeDefined()
+  })
+
+  it('if user is logged in, blogs are rendered', async () => {
+    const userLoggedIn = {
+      username: 'someone',
+      name: 'Someone',
+      id: 'abc'
+    }
+    window.localStorage.setItem('bloglistUser', JSON.stringify(userLoggedIn))
+
+    const component = render(
+      <App />
+    )
+
+    await waitForElement(
+      () => component.getByText('logout')
+    ) 
+
+    const blogList = component.container.querySelector('.blog-list')
+    expect(blogList).toBeDefined()
+    let blogs = component.container.querySelectorAll('.compact-blog')
+    expect(blogs.length).toBe(2)
   })
 })
