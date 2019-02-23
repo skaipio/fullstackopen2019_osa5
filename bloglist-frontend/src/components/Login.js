@@ -1,14 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useField } from '../hooks/useField'
 
 const Login = ({ handleLogin }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const username = useField('text')
+  const password = useField('password')
 
   const submit = event => {
     event.preventDefault()
-    handleLogin(username, password)
-    setUsername('')
-    setPassword('')
+    handleLogin(username.value, password.value)
   }
 
   return (
@@ -17,19 +16,11 @@ const Login = ({ handleLogin }) => {
       <form onSubmit={submit} className="login-form">
         <div>
           <label>käyttäjätunnus</label>
-          <input
-            type="text"
-            value={username}
-            onChange={event => setUsername(event.target.value)}
-          />
+          <input {...username} />
         </div>
         <div>
           <label>salasana</label>
-          <input
-            type="password"
-            value={password}
-            onChange={event => setPassword(event.target.value)}
-          />
+          <input {...password} />
         </div>
         <div>
           <button type="submit">kirjaudu</button>
